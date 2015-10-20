@@ -12,11 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from ubuntu:precise
+from phusion/baseimage
 
-maintainer Dockerfiles
+maintainer cptfinch
 
-run echo "deb http://archive.ubuntu.com/ubuntu precise main universe" > /etc/apt/sources.list
+# run echo "deb http://archive.ubuntu.com/ubuntu precise main universe" > /etc/apt/sources.list
 run apt-get update
 run apt-get install -y build-essential git
 run apt-get install -y python python-dev python-setuptools
@@ -43,10 +43,14 @@ run ln -s /home/docker/code/supervisor-app.conf /etc/supervisor/conf.d/
 
 # run pip install
 run pip install -r /home/docker/code/app/requirements.txt
+run pip install -r /home/docker/code/app/optional.txt
+run pip install -r /home/docker/code/app/base.txt
 
 # install django, normally you would remove this step because your project would already
 # be installed in the code/app/ directory
-run django-admin.py startproject website /home/docker/code/app/ 
+# run django-admin.py startproject website /home/docker/code/app/ 
+
+run git clone https://cptfinch@bitbucket.org/cptfinch/qatrackplus.git /home/docker/code/app
 
 expose 80
 cmd ["supervisord", "-n"]
