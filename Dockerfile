@@ -46,6 +46,13 @@ run ln -s /home/docker/code/supervisor-app.conf /etc/supervisor/conf.d/
 run pip install -r /home/docker/code/app/base.txt
 run pip install -r /home/docker/code/app/optional.txt
 
+
+run cd /home/docker/code/app/
+run git init
+run git remote add origin https://cptfinch@bitbucket.org/cptfinch/qatrackplus.git
+run git pull origin master
+
+
 # install django, normally you would remove this step because your project would already
 # be installed in the code/app/ directory
 # run django-admin.py startproject website /home/docker/code/app/ 
