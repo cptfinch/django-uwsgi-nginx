@@ -42,9 +42,9 @@ run ln -s /home/docker/code/nginx-app.conf /etc/nginx/sites-enabled/
 run ln -s /home/docker/code/supervisor-app.conf /etc/supervisor/conf.d/
 
 # run pip install
-# run pip install -r /home/docker/code/app/requirements.txt
-run pip install -r /home/docker/code/app/base.txt
-run pip install -r /home/docker/code/app/optional.txt
+run pip install -r /home/docker/code/app/requirements.txt
+# run pip install -r /home/docker/code/app/base.txt
+# run pip install -r /home/docker/code/app/optional.txt
 
 # install django, normally you would remove this step because your project would already
 # be installed in the code/app/ directory
