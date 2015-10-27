@@ -36,6 +36,13 @@ run apt-get update
 RUN add-apt-repository -y ppa:nginx/stable
 run apt-get install -y sqlite3
 
+# install some dependencies of qatrack+
+run apt-get install build-essential gfortran
+run apt-get install python-dev
+run apt-get install libatlas-dev libatlas-base-dev liblapack-dev
+run apt-get install libpng12-dev libfreetype6 libfreetype6-dev
+run apt-get build-dep python-matplotlib
+
 # install our code
 add . /home/docker/code/
 
