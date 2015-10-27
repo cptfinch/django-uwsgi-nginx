@@ -16,22 +16,32 @@ from phusion/baseimage
 
 maintainer cptfinch
 
+# run echo "deb http://archive.ubuntu.com/ubuntu precise main universe" > /etc/apt/sources.list
 run apt-get update
-
 run apt-get install -y build-essential git
 run apt-get install -y python python-dev python-setuptools
 run apt-get install -y nginx supervisor
-run apt-get install -y libatlas-dev libatlas-base-dev liblapack-dev
-run apt-get install -y libpng12-dev libfreetype6 libfreetype6-dev
+run easy_install pip
+run apt-get -y install gfortran
+run apt-get install libatlas-dev libatlas-base-dev liblapack-dev
+run apt-get install libpng12-dev libfreetype6 libfreetype6-dev
+run apt-get build-dep python-matplotlib
+
+# install uwsgi now because it takes a little while
+run pip install uwsgi
+
+# install nginx
+run apt-get install -y python-software-properties
+run apt-get update
+RUN add-apt-repository -y ppa:nginx/stable
 run apt-get install -y sqlite3
 
-#scipy stack
-run apt-get install -y python-numpy 
-run apt-get install -y python-scipy 
-run apt-get install -y python-matplotlib
-
-run easy_install pip
-run pip install uwsgi
+# install some dependencies of qatrack+
+run apt-get install build-essential gfortran
+run apt-get install python-dev
+run apt-get install libatlas-dev libatlas-base-dev liblapack-dev
+run apt-get install libpng12-dev libfreetype6 libfreetype6-dev
+run apt-get build-dep python-matplotlib
 
 # install our code
 add . /home/docker/code/
@@ -48,15 +58,12 @@ run pip install -r /home/docker/code/requirements.txt
 # clone qatrack+ to the app directory
 run git clone https://cptfinch@bitbucket.org/cptfinch/qatrackplus.git /home/docker/code/app/.
 
-
-#run cd /home/docker/code/app && mkdir db && python manage.py syncdb
-#run python manage.py dumpdata --indent=2 auth > initial_data.json
-#run python manage.py dumpdata --indent=2 sessions
-#run python manage.py syncdb --noinput
+#run cd /home/docker/code && mdir db && python manage.py syncdb
+#run python manage.py migrate
 
 # install django, normally you would remove this step because your project would already
 # be installed in the code/app/ directory
 # run django-admin.py startproject website /home/docker/code/app/ 
 
-#expose 8000
+#expose 80
 #cmd ["supervisord", "-n"]

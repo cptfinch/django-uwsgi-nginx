@@ -16,22 +16,21 @@ from phusion/baseimage
 
 maintainer cptfinch
 
+# run echo "deb http://archive.ubuntu.com/ubuntu precise main universe" > /etc/apt/sources.list
 run apt-get update
-
 run apt-get install -y build-essential git
 run apt-get install -y python python-dev python-setuptools
 run apt-get install -y nginx supervisor
-run apt-get install -y libatlas-dev libatlas-base-dev liblapack-dev
-run apt-get install -y libpng12-dev libfreetype6 libfreetype6-dev
-run apt-get install -y sqlite3
-
-#scipy stack
-run apt-get install -y python-numpy 
-run apt-get install -y python-scipy 
-run apt-get install -y python-matplotlib
-
 run easy_install pip
+
+# install uwsgi now because it takes a little while
 run pip install uwsgi
+
+# install nginx
+run apt-get install -y python-software-properties
+run apt-get update
+RUN add-apt-repository -y ppa:nginx/stable
+run apt-get install -y sqlite3
 
 # install our code
 add . /home/docker/code/
@@ -45,18 +44,17 @@ run ln -s /home/docker/code/supervisor-app.conf /etc/supervisor/conf.d/
 # run pip install
 run pip install -r /home/docker/code/requirements.txt
 
-# clone qatrack+ to the app directory
+# clone the qatrack+ app to the app directory 
 run git clone https://cptfinch@bitbucket.org/cptfinch/qatrackplus.git /home/docker/code/app/.
 
-
-#run cd /home/docker/code/app && mkdir db && python manage.py syncdb
-#run python manage.py dumpdata --indent=2 auth > initial_data.json
-#run python manage.py dumpdata --indent=2 sessions
-#run python manage.py syncdb --noinput
+#run cd /home/docker/code/app/
+#run git init
+#run git remote add origin https://cptfinch@bitbucket.org/cptfinch/qatrackplus.git
+#run git pull origin master
 
 # install django, normally you would remove this step because your project would already
 # be installed in the code/app/ directory
 # run django-admin.py startproject website /home/docker/code/app/ 
 
-#expose 8000
-#cmd ["supervisord", "-n"]
+expose 80
+cmd ["supervisord", "-n"]
