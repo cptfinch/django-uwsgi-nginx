@@ -22,26 +22,31 @@ run apt-get install -y build-essential git
 run apt-get install -y python python-dev python-setuptools
 run apt-get install -y nginx supervisor
 run easy_install pip
-run apt-get install gfortran
-run apt-get install libatlas-dev libatlas-base-dev liblapack-dev
-run apt-get install libpng12-dev libfreetype6 libfreetype6-dev
-run apt-get build-dep python-matplotlib
+#run apt-get -y install gfortran
+run apt-get -y install libatlas-dev libatlas-base-dev liblapack-dev
+run apt-get -y install libpng12-dev libfreetype6 libfreetype6-dev
+
+#scipy stack
+run apt-get -y install python-numpy 
+run apt-get -y install python-scipy 
+run apt-get -y install python-matplotlib
 
 # install uwsgi now because it takes a little while
 run pip install uwsgi
 
 # install nginx
-run apt-get install -y python-software-properties
-run apt-get update
-RUN add-apt-repository -y ppa:nginx/stable
+run apt-get -y install nginx
+#run apt-get install -y python-software-properties
+#run apt-get update
+#RUN add-apt-repository -y ppa:nginx/stable
 run apt-get install -y sqlite3
 
 # install some dependencies of qatrack+
-run apt-get install build-essential gfortran
-run apt-get install python-dev
-run apt-get install libatlas-dev libatlas-base-dev liblapack-dev
-run apt-get install libpng12-dev libfreetype6 libfreetype6-dev
-run apt-get build-dep python-matplotlib
+#run apt-get install build-essential gfortran
+#run apt-get install python-dev
+#run apt-get install libatlas-dev libatlas-base-dev liblapack-dev
+#run apt-get install libpng12-dev libfreetype6 libfreetype6-dev
+#run apt-get build-dep python-matplotlib
 
 # install our code
 add . /home/docker/code/
@@ -58,12 +63,12 @@ run pip install -r /home/docker/code/requirements.txt
 # clone qatrack+ to the app directory
 run git clone https://cptfinch@bitbucket.org/cptfinch/qatrackplus.git /home/docker/code/app/.
 
-#run cd /home/docker/code && mdir db && python manage.py syncdb
-#run python manage.py migrate
+run cd /home/docker/code && mkdir db && python manage.py syncdb
+run python manage.py migrate
 
 # install django, normally you would remove this step because your project would already
 # be installed in the code/app/ directory
 # run django-admin.py startproject website /home/docker/code/app/ 
 
-#expose 80
-#cmd ["supervisord", "-n"]
+expose 8000
+cmd ["supervisord", "-n"]
