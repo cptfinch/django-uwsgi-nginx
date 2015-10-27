@@ -22,6 +22,10 @@ run apt-get install -y build-essential git
 run apt-get install -y python python-dev python-setuptools
 run apt-get install -y nginx supervisor
 run easy_install pip
+run apt-get install gfortran
+run apt-get install libatlas-dev libatlas-base-dev liblapack-dev
+run apt-get install libpng12-dev libfreetype6 libfreetype6-dev
+run apt-get build-dep python-matplotlib
 
 # install uwsgi now because it takes a little while
 run pip install uwsgi
@@ -42,22 +46,17 @@ run ln -s /home/docker/code/nginx-app.conf /etc/nginx/sites-enabled/
 run ln -s /home/docker/code/supervisor-app.conf /etc/supervisor/conf.d/
 
 # run pip install
-# run pip install -r /home/docker/code/app/requirements.txt
-run pip install -r /home/docker/code/app/base.txt
-run pip install -r /home/docker/code/app/optional.txt
+run pip install -r /home/docker/code/requirements.txt
 
+# clone qatrack+ to the app directory
+run git clone https://cptfinch@bitbucket.org/cptfinch/qatrackplus.git /home/docker/code/app/.
 
-run cd /home/docker/code/app/
-run git init
-run git remote add origin https://cptfinch@bitbucket.org/cptfinch/qatrackplus.git
-run git pull origin master
-
+#run cd /home/docker/code && mdir db && python manage.py syncdb
+#run python manage.py migrate
 
 # install django, normally you would remove this step because your project would already
 # be installed in the code/app/ directory
 # run django-admin.py startproject website /home/docker/code/app/ 
 
-run git clone https://cptfinch@bitbucket.org/cptfinch/qatrackplus.git /home/docker/code/app
-
-expose 80
-cmd ["supervisord", "-n"]
+#expose 80
+#cmd ["supervisord", "-n"]

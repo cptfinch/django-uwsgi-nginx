@@ -1,3 +1,4 @@
+# Essential
 Django>=1.4.5,<1.5
 -e git+https://github.com/peppelorum/Django-genericdropdown.git#egg=django-genericdropdown
 django-tastypie>=0.9.15,<0.10
@@ -14,3 +15,13 @@ numpy>=1.6.2
 scipy>=0.10.0
 matplotlib>=1.0
 django-admin-views==0.1.4
+
+# Optional
+pep8>=0.6.1
+pylint>=0.25.1
+coverage>=3.5.1
+django-coverage>=1.2.2
+django-debug-toolbar>=0.9.4
+nose>=1.1.2
+mock>=1.0
+#pywin32>=217
